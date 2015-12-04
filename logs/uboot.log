@@ -1,0 +1,135 @@
+m8b_m201_1G#version
+
+U-boot(m8b_m201_v1@20f4f42d) (Oct 28 2015 - 05:57:11)
+arm-none-eabi-gcc (Sourcery G++ Lite 2010q1-188) 4.4.1
+GNU ld (Sourcery G++ Lite 2010q1-188) 2.19.51.20090709
+
+
+
+m8b_m201_1G#coninfo
+List of available devices:
+serial   80000003 SIO stdin stdout stderr 
+nulldev  80000003 SIO 
+uart_ao  00000003 .IO 
+uart1    00000003 .IO 
+uart0    00000003 .IO 
+
+
+
+
+m8b_m201_1G#printenv
+1080ioutputheight=1043
+1080ioutputwidth=1853
+1080ioutputx=30
+1080ioutputy=18
+1080poutputheight=1044
+1080poutputwidth=1860
+1080poutputx=30
+1080poutputy=18
+480ioutputheight=464
+480ioutputwidth=700
+480ioutputx=10
+480ioutputy=8
+480poutputheight=464
+480poutputwidth=700
+480poutputx=10
+480poutputy=8
+4k2k30hz_height=2159
+4k2k30hz_width=3839
+4k2k30hz_x=0
+4k2k30hz_y=0
+576ioutputheight=555
+576ioutputwidth=695
+576ioutputx=12
+576ioutputy=10
+576poutputheight=556
+576poutputwidth=700
+576poutputx=10
+576poutputy=10
+720poutputheight=696
+720poutputwidth=1240
+720poutputx=20
+720poutputy=12
+aml_dt=m8b_m201_1G
+baudrate=115200
+bootargs=init=/init console=ttyS0,115200n8 no_console_suspend storage=2 vdaccfg=0xa000 logo=osd1,loaded,0x7900000,576cvbs,full hdmimode=720p cvbsmode=576cvbs androidboot.firstboot=0 hdmitx=
+bootcmd=run storeboot
+bootdelay=1
+bootfile=boot.img
+bootm_low=0x00000000
+bootm_size=0x80000000
+bootpath=u-boot.bin
+bootsize=100000
+bootstart=0
+bootup_offset=0x130b00c0
+bootup_size=0x1d260
+chipname=8726m8
+console=ttyS0,115200n8
+cvbsmode=576cvbs
+digitaudiooutput=PCM
+display_bpp=16
+display_color_bg=0
+display_color_fg=0xffff
+display_color_format_index=16
+display_height=576
+display_layer=osd2
+display_width=720
+ethact=Meson_Ethernet
+ethaddr=00:15:18:01:81:31
+fb_addr=0x7900000
+fb_height=720
+fb_width=1280
+firstboot=0
+gatewayip=10.18.9.1
+get_dt=checkhw
+has.accelerometer=false
+hdmimode=720p
+hostname=arm_m8
+initargs=init=/init console=ttyS0,115200n8 no_console_suspend storage=2
+initrd_high=60000000
+ipaddr=10.18.9.97
+loadaddr=0x12000000
+loadaddr_logo=0x13000000
+mmcargs=setenv bootargs console=${console} boardname=m8_board
+netmask=255.255.255.0
+normalsize=400000
+normalstart=1000000
+outputmode=576cvbs
+p0path=uImage
+p0size=400000
+p0start=1000000
+p1path=android.rootfs
+p1size=8000000
+p1start=1400000
+partnum=2
+preboot=if itest ${upgrade_step} == 3; then run prepare; run storeargs; run update; fi; if itest ${upgrade_step} == 1; then  defenv; setenv upgrade_step 2; saveenv;fi; run prepare;run storeargs;get_rebootmode; clear_rebootmode; echo reboot_mode=${reboot_mode};run update_ir; run update_key; run switch_bootmode
+preloaddtb=imgread dtb boot ${loadaddr}
+prepare=logo size ${outputmode}; video open; video clear; video dev open ${outputmode};imgread pic logo bootup ${loadaddr_logo}; bmp display ${bootup_offset}; bmp scale;
+reboot_mode=charging
+recovery=echo enter recovery;if mmcinfo; then if fatload mmc 0 ${loadaddr} recovery.img; then bootm;fi;fi; if usb start 0; then if fatload usb 0 ${loadaddr} recovery.img; then bootm; fi;fi;if imgread kernel recovery ${loadaddr}; then bootm; else echo no recovery in flash; fi;
+sdc_burning=sdc_burn ${sdcburncfg}
+sdcburncfg=aml_sdc_burn.ini
+serverip=10.18.9.113
+stderr=serial
+stdin=serial
+stdout=serial
+store=2
+storeargs=setenv bootargs ${initargs} vdaccfg=${vdac_config} logo=osd1,loaded,${fb_addr},${outputmode},full hdmimode=${hdmimode} cvbsmode=${cvbsmode} androidboot.firstboot=${firstboot} hdmitx=${cecconfig}
+storeboot=if test ${reboot_mode} = charging; then run try_auto_burn; fi;echo Booting...; if unifykey get usid; then  setenv bootargs ${bootargs} androidboot.serialno=${usid};fi;if unifykey get mac; then  setenv bootargs ${bootargs} mac=${mac};fi;imgread kernel boot ${loadaddr};bootm;run recovery
+switch_bootmode=if test ${reboot_mode} = factory_reset; then run recovery;else if test ${reboot_mode} = update; then run update;else if test ${reboot_mode} = usb_burning; then run usb_burning;else if test ${wipe_data} = failed; then echo wipe_data=${wipe_data}; run recovery;else   fi;fi;fi;fi
+testaddr=0x12400000
+try_auto_burn=update 700 750;
+update=run usb_burning; if mmcinfo; then if fatexist mmc 0 ${sdcburncfg}; then run sdc_burning; else if fatload mmc 0 ${loadaddr} aml_autoscript; then autoscr ${loadaddr}; fi;run recovery;fi;else run recovery;fi;
+update_ir=if irdetect; then run update; fi
+update_key=saradc open 0; if saradc get_in_range 0 0x90; then msleep 50; if saradc get_in_range 0 0x90; then echo update by key...; run update; fi;fi
+upgrade_step=2
+usb_burning=update 1000
+vdac_config=0xa000
+video_dev=tvout
+wipe_data=success
+
+Environment size: 4323/65532 bytes
+
+
+
+
