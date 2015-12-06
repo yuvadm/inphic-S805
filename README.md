@@ -10,3 +10,36 @@ We bravely attempt to build and run mainline kernel on this little board. For th
  - [Mainline kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git) clone
  - [Buildroot](http://www.buildroot.org/)
 
+## Usage
+
+Taken from http://linux-meson.com/doku.php
+
+### Kernel
+
+```bash
+$ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- multi_v7_defconfig
+$ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- LOADADDR=0x00208000 uImage dtbs
+```
+
+Kernel and DTS will be in `arch/arm/boot`.
+
+### Rootfs
+
+```bash
+$ cd buildroot-2015.11
+$ cp ../buildroot.config .config
+$ make menuconfig  # customize if necessary
+$ make
+```
+
+Copy relevant files to a FAT formatted SD card, connect to board serial port, and stop the uboot auto boot sequence. Then run:
+
+```
+# mmcinfo
+# fatload mmc 0:1 0x21000000 uImage
+# fatload mmc 0:1 0x22000000 rootfs.cpio.uboot
+# fatload mmc 0:1 0x21800000 meson8b-mxq.dtb
+# setenv bootargs "console=ttyAML0,115200"
+# bootm 0x21000000 0x22000000 0x21800000
+```
+
